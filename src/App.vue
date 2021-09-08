@@ -1,16 +1,35 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <h1>{{count}}</h1>
+  <h1>我是双倍{{doubleCount}}</h1>
+  <button @click="addCount">点我点我</button>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
-
+import { defineComponent, ref, computed, reactive, toRefs } from 'vue';
+interface DataProps {
+  count: number;
+  doubleCount: number;
+  addCount: () => void;
+}
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
+  setup(props, context) {
+    // const count = ref(0)
+    // const addCount = () => {
+    //   count.value++
+    // }
+    const data: DataProps = reactive({
+      count: 0,
+      addCount: () => {
+        data.count++
+      },
+      doubleCount: computed(() => data.count * 2)
+    })
+    const refData = toRefs(data)
+    return {
+      ...refData
+    }
   }
 });
 </script>
